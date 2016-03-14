@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     //Outlets for storyboard
     @IBOutlet var countLabel: UILabel!
     @IBOutlet var waitTime: UITextField!
+    @IBOutlet var message: UILabel!
     
     @IBAction func addOne(sender: UIButton) {
         addOneToCount()
@@ -77,20 +78,29 @@ class ViewController: UIViewController {
     }
     
     func sendNotificationAt(time: NSDate) {
-        print("Sending notification at \(time)")
+        //check if notifications are enabled
+        let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
+        if settings!.types.contains(.Alert) {
+            message.text = ""
+            print("Sending notification at \(time)")
+            
+            //Create local notification
+            let notification = UILocalNotification()
+            notification.fireDate = time
+            notification.alertBody = "The current count is \(count)"
+            notification.alertAction = "Open App"
+            
+            //Sets it to a particular category type
+            notification.category = "defaultCategory"
+            
+            //Delete all previous notifications and send the new one
+            UIApplication.sharedApplication().cancelAllLocalNotifications()
+            UIApplication.sharedApplication().scheduleLocalNotification(notification)
+
+        } else {
+            message.text = "You have notifications\nturned off. Please go\nto settings and turn on\nbanner or alert\nnotifications"
+        }
         
-        //Create local notification
-        let notification = UILocalNotification()
-        notification.fireDate = time
-        notification.alertBody = "The current count is \(count)"
-        notification.alertAction = "Open App"
-        
-        //Sets it to a particular category type
-        notification.category = "defaultCategory"
-        
-        //Delete all previous notifications and send the new one
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
-        UIApplication.sharedApplication().scheduleLocalNotification(notification)
     }
     
     func localNotificationSettings() {
