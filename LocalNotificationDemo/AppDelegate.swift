@@ -40,7 +40,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    //NOTIFICATION ACTIONS
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        //Edit this code to make local notifications do something when the app is in the foreground
+        print("Local Notification:")
+        print(notification.alertBody!)
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+        
+        //This function runs to send the actual notifications to the current viewController
+        if identifier == "addOne" {
+            NSNotificationCenter.defaultCenter().postNotificationName("addOneNotification", object: nil)
+        } else if identifier == "subOne" {
+            NSNotificationCenter.defaultCenter().postNotificationName("subOneNotification", object: nil)
+        } else if identifier == "reset" {
+            NSNotificationCenter.defaultCenter().postNotificationName("resetNotification", object: nil)
+        }
+        
+        completionHandler()
+    }
 
+    
 
 }
 
