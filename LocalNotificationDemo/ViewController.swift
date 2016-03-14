@@ -49,6 +49,7 @@ class ViewController: UIViewController {
     
     func saveCount() {
         defaults.setInteger(count, forKey: "count")
+        UIApplication.sharedApplication().applicationIconBadgeNumber = count
     }
     
     func loadCount() {
@@ -102,7 +103,7 @@ class ViewController: UIViewController {
             let addOneAction = UIMutableUserNotificationAction()
             addOneAction.identifier = "addOne"
             addOneAction.title = "Add One"
-            addOneAction.activationMode = .Foreground
+            addOneAction.activationMode = .Background
             addOneAction.destructive = false
             addOneAction.authenticationRequired = false
             
@@ -132,7 +133,7 @@ class ViewController: UIViewController {
             notificationCategory.setActions(minimalActions, forContext: .Minimal)
             
             // Register the notification settings.
-            let newNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Sound], categories: Set([notificationCategory]))
+            let newNotificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Sound, .Badge], categories: Set([notificationCategory]))
             UIApplication.sharedApplication().registerUserNotificationSettings(newNotificationSettings)
             
             
